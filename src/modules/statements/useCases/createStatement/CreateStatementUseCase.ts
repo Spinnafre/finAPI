@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { inject, injectable } from "tsyringe";
 
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
@@ -25,6 +26,8 @@ export class CreateStatementUseCase {
     if(type === 'withdraw') {
       const { balance } = await this.statementsRepository.getUserBalance({ user_id });
 
+      // Se o saldo total for menor do que a quantidade que quero
+      // sacar, não irá deixar realizar a operação.
       if (balance < amount) {
         throw new CreateStatementError.InsufficientFunds()
       }

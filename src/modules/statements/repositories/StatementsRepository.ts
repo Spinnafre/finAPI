@@ -43,7 +43,8 @@ export class StatementsRepository implements IStatementsRepository {
     const statement = await this.repository.find({
       where: { user_id }
     });
-
+    // Irá mapear todas as operações do usuário
+    // calculando o saldo total
     const balance = statement.reduce((acc, operation) => {
       if (operation.type === 'deposit') {
         return acc + operation.amount;
@@ -52,6 +53,8 @@ export class StatementsRepository implements IStatementsRepository {
       }
     }, 0)
 
+    // Se for solicitado o histórico de transações
+    // irá retornar ele junto com o saldo
     if (with_statement) {
       return {
         statement,

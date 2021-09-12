@@ -13,7 +13,10 @@ export class CreateStatementController {
     const { id: user_id } = request.user;
     const { amount, description } = request.body;
 
+    //Pega a url que foi passada na requisição
+    // /statements/deposit ou /statement/withdraw
     const splittedPath = request.originalUrl.split('/')
+    //Pega o último caminho que foi passado na url ('withdraw' ou 'deposit')
     const type = splittedPath[splittedPath.length - 1] as OperationType;
 
     const createStatement = container.resolve(CreateStatementUseCase);

@@ -38,6 +38,6 @@ describe('Show User Controller', () => {
       Authorization:`Bearer ${session.body.token}`
     })
 
-    console.log(user.body)
+    expect(user.body).toHaveProperty('id')
   })
 });

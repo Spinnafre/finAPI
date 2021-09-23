@@ -17,13 +17,15 @@ export class StatementsRepository implements IStatementsRepository {
     user_id,
     amount,
     description,
-    type
+    type,
+    sender_id
   }: ICreateStatementDTO): Promise<Statement> {
     const statement = this.repository.create({
       user_id,
       amount,
       description,
-      type
+      type,
+      sender_id
     });
 
     return this.repository.save(statement);
@@ -46,13 +48,14 @@ export class StatementsRepository implements IStatementsRepository {
     // Irá mapear todas as operações do usuário
     // calculando o saldo total
     const balance = statement.reduce((acc, operation) => {
-      if (operation.type === 'deposit') {
-        return acc + operation.amount;
+      //Se for deposito ou caso o usuário tenha recebido algumas tranferência, irá somar ao saldo
+      if (operation.type === 'deposit' || operation.type === 'transfer' && operation.sender_id !== operation.user_id) {
+        return acc + Number(operation.amount);
       } else {
-        return acc - operation.amount;
+        return acc - Number(operation.amount);
       }
     }, 0)
-
+    console.log(balance)
     // Se for solicitado o histórico de transações
     // irá retornar ele junto com o saldo
     if (with_statement) {

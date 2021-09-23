@@ -8,10 +8,13 @@ export class BalanceMap {
       description,
       type,
       created_at,
-      updated_at
+      updated_at,
+      sender_id,
+      user_id
     }) => (
       {
         id,
+        sender_id:sender_id === user_id?'Your transfer':sender_id,
         amount: Number(amount),
         description,
         type,
